@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Growth Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.1) 10px,
+                rgba(255,255,255,0.1) 20px
+            );
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-content {
+            padding: 40px 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #ee5a24);
+            border-radius: 2px;
+        }
+
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9ff;
+            border-radius: 12px;
+            border-left: 4px solid #3498db;
+            transition: all 0.3s ease;
+        }
+
+        .question:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background 0.2s ease;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 8px;
+            transform: scale(1.2);
+            accent-color: #3498db;
+        }
+
+        .radio-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .radio-item:hover {
+            border-color: #3498db;
+            background: #f0f7ff;
+        }
+
+        .radio-item input[type="radio"]:checked + label {
+            color: #3498db;
+            font-weight: 600;
+        }
+
+        .radio-item input[type="radio"] {
+            margin-right: 8px;
+            accent-color: #3498db;
+        }
+
+        .text-input, .textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .text-input:focus, .textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .business-stage {
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .business-stage h3 {
+            color: #2d3436;
+            margin-bottom: 15px;
+        }
+
+        .stage-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .stage-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: white;
+            color: #2d3436;
+        }
+
+        .stage-btn:hover, .stage-btn.active {
+            background: #2d3436;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .submit-section {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #00b894, #00a085);
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .submit-btn {
+            background: white;
+            color: #00a085;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e1e8ed;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .contact-info {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-content {
+                padding: 30px 20px;
+            }
+            
+            .checkbox-group, .radio-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .stage-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Business Growth Assessment</h1>
+            <p>Discover your business potential and unlock growth opportunities</p>
+        </div>
+
+        <div class="form-content">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <form id="businessForm">
+                <!-- Business Stage Selection -->
+                <div class="business-stage">
+                    <h3>What stage is your business in?</h3>
+                    <div class="stage-buttons">
+                        <button type="button" class="stage-btn" data-stage="idea">💡 Just an Idea</button>
+                        <button type="button" class="stage-btn" data-stage="planning">📋 Planning Phase</button>
+                        <button type="button" class="stage-btn" data-stage="launching">🚀 Ready to Launch</button>
+                        <button type="button" class="stage-btn" data-stage="existing">🏢 Already Operating</button>
+                    </div>
+                    <input type="hidden" id="businessStage" name="businessStage">
+                </div>
+
+                <!-- Section 1: Business Information -->
+                <div class="section">
+                    <h2 class="section-title">Business Overview</h2>
+                    
+                    <div class="question">
+                        <label class="question-label">What type of business are you in (or planning)?</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="healthcare" name="businessType" value="healthcare">
+                                <label for="healthcare">🏥 Healthcare/Medical</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="professional" name="businessType" value="professional">
+                                <label for="professional">💼 Professional Services</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="home" name="businessType" value="home">
+                                <label for="home">🔧 Home Services</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="retail" name="businessType" value="retail">
+                                <label for="retail">🛍️ Retail/E-commerce</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="education" name="businessType" value="education">
+                                <label for="education">📚 Education/Training</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="food" name="businessType" value="food">
+                                <label for="food">🍽️ Food & Beverage</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="tech" name="businessType" value="tech">
+                                <label for="tech">💻 Technology/Software</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="beauty" name="businessType" value="beauty">
+                                <label for="beauty">💄 Beauty/Wellness</label>
+                            </div>
+                        </div>
+                        <input type="text" class="text-input" placeholder="Other (please specify)" name="businessTypeOther" style="margin-top: 10px;">
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">How long have you been in business (or planning to be)?</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="planning" name="businessAge" value="planning">
+                                <label for="planning">Still Planning</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="new" name="businessAge" value="new">
+                                <label for="new">Less than 1 year</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="growing" name="businessAge" value="growing">
+                                <label for="growing">1-3 years</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="established" name="businessAge" value="established">
+                                <label for="established">4+ years</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">What area do you plan to serve?</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="local" name="serviceArea" value="local">
+                                <label for="local">🏘️ Local Area</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="regional" name="serviceArea" value="regional">
+                                <label for="regional">🌆 Regional</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="national" name="serviceArea" value="national">
+                                <label for="national">🌍 National</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="online" name="serviceArea" value="online">
+                                <label for="online">💻 Online Only</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Target Market -->
+                <div class="section">
+                    <h2 class="section-title">Your Ideal Customers</h2>
+                    
+                    <div class="question">
+                        <label class="question-label">Who do you want to serve?</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="consumers" name="customerType" value="consumers">
+                                <label for="consumers">👥 Individual People</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="smallbiz" name="customerType" value="smallbiz">
+                                <label for="smallbiz">🏪 Small Businesses</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="corporate" name="customerType" value="corporate">
+                                <label for="corporate">🏢 Large Companies</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="mixed" name="customerType" value="mixed">
+                                <label for="mixed">🎯 Mixed</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">What problem do you solve for customers?</label>
+                        <textarea class="textarea" name="problemSolved" placeholder="Describe the main problem your business solves..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">What makes you different from competitors?</label>
+                        <textarea class="textarea" name="uniqueValue" placeholder="What's your unique advantage or approach?"></textarea>
+                    </div>
+                </div>
+
+                <!-- Section 3: Current Marketing (for existing businesses) -->
+                <div class="section" id="currentMarketingSection">
+                    <h2 class="section-title">Current Marketing Efforts</h2>
+                    
+                    <div class="question">
+                        <label class="question-label">What marketing are you currently doing?</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="website" name="currentMarketing" value="website">
+                                <label for="website">🌐 Website</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="social" name="currentMarketing" value="social">
+                                <label for="social">📱 Social Media</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="google" name="currentMarketing" value="google">
+                                <label for="google">🔍 Google Ads</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="referrals" name="currentMarketing" value="referrals">
+                                <label for="referrals">🤝 Referrals</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="print" name="currentMarketing" value="print">
+                                <label for="print">📰 Print Ads</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="none" name="currentMarketing" value="none">
+                                <label for="none">❌ None Yet</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">How do customers typically find you?</label>
+                        <textarea class="textarea" name="customerDiscovery" placeholder="Describe how people usually discover your business..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Section 4: Goals & Challenges -->
+                <div class="section">
+                    <h2 class="section-title">Goals & Challenges</h2>
+                    
+                    <div class="question">
+                        <label class="question-label">What are your main business goals?</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="revenue" name="goals" value="revenue">
+                                <label for="revenue">💰 Increase Revenue</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="customers" name="goals" value="customers">
+                                <label for="customers">👥 Get More Customers</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="online" name="goals" value="online">
+                                <label for="online">🌐 Build Online Presence</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="reputation" name="goals" value="reputation">
+                                <label for="reputation">⭐ Build Reputation</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="expand" name="goals" value="expand">
+                                <label for="expand">📈 Expand Business</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="launch" name="goals" value="launch">
+                                <label for="launch">🚀 Successfully Launch</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">What's your biggest challenge?</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="time" name="challenge" value="time">
+                                <label for="time">⏰ Not Enough Time</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="budget" name="challenge" value="budget">
+                                <label for="budget">💸 Limited Budget</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="knowledge" name="challenge" value="knowledge">
+                                <label for="knowledge">🤔 Don't Know What Works</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="competition" name="challenge" value="competition">
+                                <label for="competition">⚔️ Too Much Competition</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="leads" name="challenge" value="leads">
+                                <label for="leads">📞 Getting Leads</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="starting" name="challenge" value="starting">
+                                <label for="starting">🎯 Don't Know Where to Start</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">What would success look like for you?</label>
+                        <textarea class="textarea" name="successVision" placeholder="Describe your vision of success..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="section">
+                    <h2 class="section-title">Contact Information</h2>
+                    <div class="contact-info">
+                        <div class="contact-grid">
+                            <input type="text" class="text-input" name="fullName" placeholder="Your Full Name *" required>
+                            <input type="text" class="text-input" name="businessName" placeholder="Business Name (if applicable)">
+                            <input type="email" class="text-input" name="email" placeholder="Email Address *" required>
+                            <input type="tel" class="text-input" name="phone" placeholder="Phone Number">
+                            <input type="text" class="text-input" name="location" placeholder="City, State">
+                            <input type="url" class="text-input" name="website" placeholder="Website (if you have one)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-section">
+                    <h3 style="color: white; margin-bottom: 15px;">Ready to Discover Your Business Potential?</h3>
+                    <button type="submit" class="submit-btn">Get My Business Assessment 🚀</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Business stage selection
+        const stageButtons = document.querySelectorAll('.stage-btn');
+        const businessStageInput = document.getElementById('businessStage');
+        const currentMarketingSection = document.getElementById('currentMarketingSection');
+
+        stageButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                stageButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                businessStageInput.value = button.dataset.stage;
+                
+                // Hide current marketing section for planning stages
+                if (button.dataset.stage === 'idea' || button.dataset.stage === 'planning') {
+                    currentMarketingSection.style.display = 'none';
+                } else {
+                    currentMarketingSection.style.display = 'block';
+                }
+            });
+        });
+
+        // Progress bar animation
+        const form = document.getElementById('businessForm');
+        const progressFill = document.getElementById('progressFill');
+        
+        function updateProgress() {
+            const inputs = form.querySelectorAll('input, textarea');
+            const totalInputs = inputs.length;
+            let filledInputs = 0;
+            
+            inputs.forEach(input => {
+                if (input.type === 'checkbox' || input.type === 'radio') {
+                    if (input.checked) filledInputs++;
+                } else if (input.value.trim() !== '') {
+                    filledInputs++;
+                }
+            });
+            
+            const progress = (filledInputs / totalInputs) * 100;
+            progressFill.style.width = progress + '%';
+        }
+
+        // Update progress on input changes
+        form.addEventListener('input', updateProgress);
+        form.addEventListener('change', updateProgress);
+
+        // Form submission
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = new FormData(form);
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                if (data[key]) {
+                    if (Array.isArray(data[key])) {
+                        data[key].push(value);
+                    } else {
+                        data[key] = [data[key], value];
+                    }
+                } else {
+                    data[key] = value;
+                }
+            }
+            
+            console.log('Form Data:', data);
+            alert('Thank you! Your business assessment has been submitted. We\'ll be in touch soon with your personalized recommendations!');
+        });
+
+        // Initialize progress
+        updateProgress();
+    </script>
+</body>
+</html>
